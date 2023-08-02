@@ -26,9 +26,25 @@ export function mostCaloricElf(caloriesList: Array<elfCalorieInventory>): {
     const calories = caloriesList.map((elfList) => {
         return elfList.reduce((a, b) => a + b, 0);
     });
+    console.log(calories);
+    
     const fattestElf: number = calories.indexOf(Math.max(...calories));
     return {
-        elfIndex: fattestElf + 1,
+        elfIndex: fattestElf,
         calories: calories[fattestElf],
     };
+}
+
+
+export function topCalorificElfs(
+    caloriesList: Array<elfCalorieInventory>,
+    top: number,
+): { elfIndex: number; calories: number }[] {
+    const topElfs: Array<{ elfIndex: number; calories: number }> = [];
+    for (let i = 0; i < top; i++) {
+        const elf = mostCaloricElf(caloriesList);        
+        topElfs.push(elf);
+        caloriesList.splice(elf.elfIndex, 1);
+    }
+    return topElfs;
 }
