@@ -26,7 +26,6 @@ export function mostCaloricElf(caloriesList: Array<elfCalorieInventory>): {
     const calories = caloriesList.map((elfList) => {
         return elfList.reduce((a, b) => a + b, 0);
     });
-    console.log(calories);
     
     const fattestElf: number = calories.indexOf(Math.max(...calories));
     return {

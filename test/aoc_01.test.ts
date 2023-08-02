@@ -60,7 +60,7 @@ describe('AOC 01', () => {
         caloriesList = readFileSync('./data/adventofcode.com_2022_day_1_input.txt', 'utf8');
         const calories = elfCaloriesParser(caloriesList);
         const elfs = topCalorificElfs(calories, 3);
-        expect(elfs.map((item) => item.calories).reduce((acc, elf) => acc + elf)).toEqual(3);
+        expect(elfs.map((item) => item.calories).reduce((acc, elf) => acc + elf)).toEqual(201524);
     });
     
 });
