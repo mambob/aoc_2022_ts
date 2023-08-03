@@ -1,4 +1,3 @@
-import { readFileSync } from "fs";
 
 export function rangeParser(fileContent: string): number[][][] {
     const rangeList: number[][][] = [];
@@ -19,7 +18,3 @@ export function fullRangeOverlapping(firstRange: number[], secondRange: number[]
     return (firstRange[0] <= secondRange[0] && firstRange[1] >= secondRange[1])     // First contains second
         || (firstRange[0] >= secondRange[0] && firstRange[1] <= secondRange[1]);    // Second contains first
 }
-
-
-const mondongo = readFileSync('./data/adventofcode.com_2022_day_4_input.txt', 'utf8');
-console.table(rangeParser(mondongo));

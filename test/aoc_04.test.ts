@@ -1,4 +1,5 @@
-import { fullRangeOverlapping } from "../src/aoc_04";
+import { fullRangeOverlapping, rangeParser } from "../src/aoc_04";
+import { readFileSync } from "fs";
 
 describe('AOC 04', () => {
     describe('Part 1', () => {
@@ -13,7 +14,17 @@ describe('AOC 04', () => {
             });
         });
         describe('problem', () => {
-            // TODO: This tests
+            const mondongo: number[][][] = rangeParser(
+                readFileSync(
+                    "./data/adventofcode.com_2022_day_4_input.txt",
+                    "utf8",
+                ),
+            );
+            expect(
+                mondongo.filter((pair) =>
+                    fullRangeOverlapping(pair[0], pair[1]),
+                ).length,
+            ).toEqual(475);
         });
     });
     describe('Part 2', () => {
