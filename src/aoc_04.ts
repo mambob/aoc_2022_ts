@@ -18,3 +18,8 @@ export function fullRangeOverlapping(firstRange: number[], secondRange: number[]
     return (firstRange[0] <= secondRange[0] && firstRange[1] >= secondRange[1])     // First contains second
         || (firstRange[0] >= secondRange[0] && firstRange[1] <= secondRange[1]);    // Second contains first
 }
+
+
+export function rangeOverlapping(firstRange: number[], secondRange: number[]): boolean {
+    return (firstRange[1] >= secondRange[0] && firstRange[0] <= secondRange[1]);
+}
