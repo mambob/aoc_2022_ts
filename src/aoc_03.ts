@@ -18,6 +18,7 @@ export function getRuckSackCommonItems(rucksack: string): string[] {
 }
 
 
+
 export function getRuckSackBadges(rucksacks: string[]): string[] {
     const badgeList: string[] = [];
     for (let i = 0; i < rucksacks.length - 2; i += 3) {
