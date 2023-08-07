@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "tsc-watch --onSuccess \"node dist/aoc_05.js\"",
+    "start": "tsc-watch --onSuccess \"node dist/aoc_06.js\"",
     "test": "jest --verbose"
   },
   "repository": {
