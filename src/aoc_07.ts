@@ -1,3 +1,5 @@
+import { readFileSync } from "fs";
+
 
 class FileSystemNode {
     private _name: string;
@@ -59,7 +61,7 @@ class FileSystemNode {
                 throw new Error("Node already has a parent");
             }
             if (this.children.map((child) => child.name).includes(n.name)) {
-                throw new Error("Node with this name already exists");
+                throw new Error("Node with expected name already exists");
             }
             n.parent = this;
             this._children.push(n);
@@ -72,12 +74,16 @@ class FileSystemNode {
     }
 
     public toString(deep: boolean = false): string {
+        return this._toString(1, deep);
+    }
+
+    private _toString(depth: number = 1, deep: boolean = false): string {
         let stringOutput: string = '';
         if (this._type === 'dir') {
             stringOutput = `dir ${this._name}`;
             if (deep) {
                 for (const child of this._children) {
-                    stringOutput += `\n  - ${child.toString(true)}`;
+                    stringOutput += `\n` + ' '.repeat(depth * 2) + `- ${child._toString(depth + 1, true)}`;
                 }
             }
         }
@@ -92,33 +98,79 @@ class FileSystemNode {
 class FileSystemTree {
     private _root: FileSystemNode;
 
+    private _current: FileSystemNode;
+
     constructor() {
         this._root = new FileSystemNode('/', 'dir');
+        this._current = this._root;
     }
 
     get root(): FileSystemNode {
         return this._root;
     }
 
+    get current(): FileSystemNode {
+        return this._current;
+    }
+
     public toString(): string {
         return this._root.toString(true);
+    }
+
+    public cd(path: string): void {
+        if (path === '..') {
+            if (this._current.parent !== null) {
+                this._current = this._current.parent;
+            }
+        }
+        else if (path === '/') {
+            this._current = this._root;
+        }
+        else {
+            const pathArray: FileSystemNode[] = this._current.children.filter((child) => child.name === path);
+            if (pathArray.length === 0) {
+                throw new Error("Path does not exist");
+            }
+            else {
+                this._current = pathArray[0];
+            }
+        }
     }
 }
 
 
-const fsTree: FileSystemTree = new FileSystemTree();
-fsTree.root.addChildren(
-    new FileSystemNode('home', 'dir'),
-    new FileSystemNode('songs', 'dir'),
-    new FileSystemNode('bin', 'dir'),
-    new FileSystemNode('atlantis.mp4', 'file', 1234567),
-)
+function nodeWeight(node: FileSystemNode): number {
+    if (node.type === 'file') {
+        return node.size;
+    }
+    else {
+        return node.children.reduce((acc, child) => acc + nodeWeight(child), 0);
+    }
+}
 
-fsTree.root.children.filter((child) => child.name === 'songs')[0].addChildren(
-    new FileSystemNode('hey_jude.mp3', 'file', 1234567),
-    new FileSystemNode('let_it_be.mp3', 'file', 1234567),
-    new FileSystemNode('here_comes_the_sun.mp3', 'file', 1234567),
-    new FileSystemNode('deliver_us.mp3', 'file', 1234567),
-)
 
-console.log(fsTree.toString());
+function parseNode(line: string): FileSystemNode {
+    const [type, name] = line.split(' ');
+    if (type === 'dir') {
+        return new FileSystemNode(name, 'dir');
+    } else {
+        return new FileSystemNode(name, 'file', parseInt(type, 10));
+    }
+}
+
+
+function parseDocument(document: string): FileSystemTree {
+    const tree: FileSystemTree = new FileSystemTree();
+    const lines: string[] = document.split('\n');
+
+    for (const line of lines) { 
+
+    }
+    return tree;
+}
+
+
+parseDocument(readFileSync(
+    './data/adventofcode.com_2022_day_7_input.txt',
+    'utf-8'
+));
